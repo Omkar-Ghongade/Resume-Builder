@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { motion, useMotionValue, Reorder } from 'framer-motion';
 import LeftNavbar from './components/leftNavbar';
 import RightResume from './components/rightResume';
 import AboutUs from './components/subcomponents/aboutUs';
@@ -7,6 +8,29 @@ import Education from './components/subcomponents/education';
 import Experience from './components/subcomponents/experience';
 import Projects from './components/subcomponents/projects';
 import Skills from './components/subcomponents/skills';
+
+const componentMap = {
+  'About Me': AboutUs,
+  'Experience': Experience,
+  'Education': Education,
+  'Skills': Skills,
+  'Projects': Projects,
+  'Certifications': Certification,
+};
+
+const DraggableComponent = ({ componentName, index, Component, handleEdit, handleDelete }) => {
+  return (
+    <Reorder.Item
+      value={componentName}
+      className="p-4 bg-white rounded-lg shadow-md mb-4"
+    >
+      <Component
+        onEdit={() => handleEdit(componentName)}
+        onDelete={() => handleDelete(componentName)}
+      />
+    </Reorder.Item>
+  );
+};
 
 export default function App() {
   const [selectedComponents, setSelectedComponents] = useState([]);
@@ -37,30 +61,35 @@ export default function App() {
     localStorage.setItem('selectedComponents', JSON.stringify(newSelectedComponents));
   };
 
-  const renderComponent = (componentName, index) => {
-    switch (componentName) {
-      case 'About Me':
-        return <AboutUs key={index} onEdit={() => handleEdit(componentName)} onDelete={() => handleDelete(componentName)} />;
-      case 'Experience':
-        return <Experience key={index} onEdit={() => handleEdit(componentName)} onDelete={() => handleDelete(componentName)} />;
-      case 'Education':
-        return <Education key={index} onEdit={() => handleEdit(componentName)} onDelete={() => handleDelete(componentName)} />;
-      case 'Skills':
-        return <Skills key={index} onEdit={() => handleEdit(componentName)} onDelete={() => handleDelete(componentName)} />;
-      case 'Projects':
-        return <Projects key={index} onEdit={() => handleEdit(componentName)} onDelete={() => handleDelete(componentName)} />;
-      case 'Certifications':
-        return <Certification key={index} onEdit={() => handleEdit(componentName)} onDelete={() => handleDelete(componentName)} />;
-      default:
-        return null;
-    }
+  const handleReorder = (newOrder) => {
+    setSelectedComponents(newOrder);
+    localStorage.setItem('selectedComponents', JSON.stringify(newOrder));
   };
 
   return (
     <div className="flex">
       <LeftNavbar onMenuClick={handleMenuClick} />
       <RightResume>
-        {selectedComponents.map((component, index) => renderComponent(component, index))}
+        <Reorder.Group
+          axis="y"
+          values={selectedComponents}
+          onReorder={handleReorder}
+          className="space-y-4 p-4 bg-gray-100 rounded-lg"
+        >
+          {selectedComponents.map((componentName, index) => {
+            const Component = componentMap[componentName];
+            return (
+              <DraggableComponent
+                key={componentName}
+                componentName={componentName}
+                index={index}
+                Component={Component}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+              />
+            );
+          })}
+        </Reorder.Group>
       </RightResume>
     </div>
   );
