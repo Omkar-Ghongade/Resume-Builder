@@ -22,7 +22,7 @@ const DraggableComponent = ({ componentName, index, Component, handleEdit, handl
   return (
     <Reorder.Item
       value={componentName}
-      className="p-4 bg-white rounded-lg shadow-md mb-4"
+      className="p-4 rounded-lg mb-4"
     >
       <Component
         onEdit={() => handleEdit(componentName)}
