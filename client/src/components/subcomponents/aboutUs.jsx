@@ -1,11 +1,14 @@
 import React from 'react';
-import { FaEdit, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaGripVertical } from 'react-icons/fa';
 
 export default function AboutUs({ onEdit, onDelete }) {
   return (
-    <div className="flex justify-between items-center">
-      <div>
-        <h1>About Me</h1>
+    <div className="flex justify-between items-center bg-white shadow p-4 mb-4 rounded">
+      <div className="cursor-pointer">
+        <FaGripVertical />
+      </div>
+      <div className="flex-grow ml-4">
+        <h1 className="text-xl font-bold">About Me</h1>
         <p>This is the About Me section content.</p>
       </div>
       <div className="flex space-x-2">
