@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { FaPlus, FaBars } from 'react-icons/fa';
 
-export default function LeftNavbar() {
+export default function LeftNavbar({ onMenuClick }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -15,7 +15,11 @@ export default function LeftNavbar() {
 
   const downloadResume = () => {
     console.log('Downloading resume...');
-  }
+  };
+
+  const menuItems = [
+    'About Me', 'Experience', 'Education', 'Skills', 'Projects', 'Certifications'
+  ];
 
   return (
     <div>
@@ -26,9 +30,12 @@ export default function LeftNavbar() {
         </button>
       </div>
       <div className={`h-full w-64 fixed top-0 left-0 bg-gray-800 text-white flex flex-col p-4 space-y-6 transition-transform transform lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        {['About Me', 'Experience', 'Education', 'Skills', 'Projects', 'Certifications', 'Contact'].map((name) => (
+        {menuItems.map((name) => (
           <div key={name} className="w-full">
-            <button className="w-full flex justify-between items-center py-3 px-4 hover:bg-gray-700 rounded border border-gray-600 text-lg">
+            <button
+              onClick={() => onMenuClick(name)}
+              className="w-full flex justify-between items-center py-3 px-4 hover:bg-gray-700 rounded border border-gray-600 text-lg"
+            >
               <span>{name}</span>
               <FaPlus className="h-6 w-6" />
             </button>
@@ -36,8 +43,9 @@ export default function LeftNavbar() {
         ))}
         <div className="mt-auto space-y-4">
           <button
-            onClick={downloadResume} 
-            className="w-full flex justify-center items-center py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded text-lg text-white">
+            onClick={downloadResume}
+            className="w-full flex justify-center items-center py-3 px-4 bg-blue-600 hover:bg-blue-700 rounded text-lg text-white"
+          >
             Download Resume
           </button>
           <button
