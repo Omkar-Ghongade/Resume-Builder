@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { motion, useMotionValue, Reorder } from 'framer-motion';
+import { Reorder } from 'framer-motion';
 import LeftNavbar from './components/leftNavbar';
 import RightResume from './components/rightResume';
 import AboutUs from './components/subcomponents/aboutUs';
@@ -18,27 +18,29 @@ const componentMap = {
   'Certifications': Certification,
 };
 
-const DraggableComponent = ({ componentName, index, Component, handleEdit, handleDelete }) => {
+const DraggableComponent = ({ componentName, Component, onAdd, onEdit, onDelete }) => {
   return (
     <Reorder.Item
       value={componentName}
-      className="p-4 rounded-lg mb-4"
+      className="p-4 rounded-lg mb-4 border border-gray-300"
     >
-      <Component
-        onEdit={() => handleEdit(componentName)}
-        onDelete={() => handleDelete(componentName)}
-      />
+      <Component onAdd={() => onAdd(componentName)} onEdit={() => onEdit(componentName)} onDelete={() => onDelete(componentName)} />
     </Reorder.Item>
   );
 };
 
 export default function App() {
   const [selectedComponents, setSelectedComponents] = useState([]);
+  const [editDeleteVisible, setEditDeleteVisible] = useState({});
 
   useEffect(() => {
     const savedComponents = JSON.parse(localStorage.getItem('selectedComponents'));
+    const savedVisibility = JSON.parse(localStorage.getItem('editDeleteVisible'));
     if (savedComponents) {
       setSelectedComponents(savedComponents);
+    }
+    if (savedVisibility) {
+      setEditDeleteVisible(savedVisibility);
     }
   }, []);
 
@@ -48,6 +50,14 @@ export default function App() {
       setSelectedComponents(newSelectedComponents);
       localStorage.setItem('selectedComponents', JSON.stringify(newSelectedComponents));
     }
+    setEditDeleteVisible(prevState => {
+      const newState = {
+        ...prevState,
+        [componentName]: true
+      };
+      localStorage.setItem('editDeleteVisible', JSON.stringify(newState));
+      return newState;
+    });
   };
 
   const handleEdit = (componentName) => {
@@ -59,6 +69,15 @@ export default function App() {
     const newSelectedComponents = selectedComponents.filter(comp => comp !== componentName);
     setSelectedComponents(newSelectedComponents);
     localStorage.setItem('selectedComponents', JSON.stringify(newSelectedComponents));
+
+    setEditDeleteVisible(prevState => {
+      const newState = {
+        ...prevState,
+        [componentName]: false
+      };
+      localStorage.setItem('editDeleteVisible', JSON.stringify(newState));
+      return newState;
+    });
   };
 
   const handleReorder = (newOrder) => {
@@ -68,13 +87,13 @@ export default function App() {
 
   return (
     <div className="flex">
-      <LeftNavbar onMenuClick={handleMenuClick} />
+      <LeftNavbar onMenuClick={handleMenuClick} onEdit={handleEdit} onDelete={handleDelete} />
       <RightResume>
         <Reorder.Group
           axis="y"
           values={selectedComponents}
           onReorder={handleReorder}
-          className="space-y-4 p-4 bg-gray-100 rounded-lg"
+          className="space-y-4 rounded-lg"
         >
           {selectedComponents.map((componentName, index) => {
             const Component = componentMap[componentName];
@@ -82,10 +101,10 @@ export default function App() {
               <DraggableComponent
                 key={componentName}
                 componentName={componentName}
-                index={index}
                 Component={Component}
-                handleEdit={handleEdit}
-                handleDelete={handleDelete}
+                onAdd={handleMenuClick}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
               />
             );
           })}

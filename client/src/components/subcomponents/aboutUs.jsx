@@ -1,23 +1,20 @@
 import React from 'react';
-import { FaEdit, FaTrash, FaGripVertical } from 'react-icons/fa';
+import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 
-export default function AboutUs({ onEdit, onDelete }) {
+export default function AboutUs({ onEdit, onDelete, onAdd }) {
   return (
-    <div className="flex justify-between items-center bg-white shadow p-4 mb-4 rounded">
-      <div className="cursor-pointer">
-        <FaGripVertical />
-      </div>
-      <div className="flex-grow ml-4">
-        <h1 className="text-xl font-bold">About Me</h1>
-        <p>This is the About Me section content.</p>
-      </div>
-      <div className="flex space-x-2">
-        <button onClick={onEdit} className="text-blue-500 hover:text-blue-700">
-          <FaEdit />
-        </button>
-        <button onClick={onDelete} className="text-red-500 hover:text-red-700">
-          <FaTrash />
-        </button>
+    <div className="flex flex-col items-center p-4 mb-4 border border-gray-300 rounded-lg">
+      <h1 className="text-3xl font-bold">Omkar Ghongade</h1>
+      <div className="mt-2 flex space-x-4 text-lg">
+        <span>+91 9172716327</span>
+        <span>•</span>
+        <span>omkarsubhashghongade21@gmail.com</span>
+        <span>•</span>
+        <a href="https://linkedin.com/in/your-profile" className="text-blue-500">LinkedIn</a>
+        <span>•</span>
+        <a href="https://github.com/your-username" className="text-blue-500">GitHub</a>
+        <span>•</span>
+        <a href="https://scholar.google.com/citations?user=your-google-scholar-id" className="text-blue-500">GScholar</a>
       </div>
     </div>
   );

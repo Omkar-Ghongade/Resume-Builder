@@ -1,11 +1,30 @@
-import React, { useState } from 'react';
-import { FaPlus, FaBars } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { FaEdit, FaTrash, FaPlus, FaBars } from 'react-icons/fa';
 
-export default function LeftNavbar({ onMenuClick }) {
+export default function LeftNavbar({ onMenuClick, onEdit, onDelete }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [editDeleteVisible, setEditDeleteVisible] = useState({});
+
+  useEffect(() => {
+    const savedVisibility = JSON.parse(localStorage.getItem('editDeleteVisible'));
+    if (savedVisibility) {
+      setEditDeleteVisible(savedVisibility);
+    }
+  }, []);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
+  };
+
+  const toggleEditDelete = (name) => {
+    setEditDeleteVisible(prevState => {
+      const newState = {
+        ...prevState,
+        [name]: !prevState[name]
+      };
+      localStorage.setItem('editDeleteVisible', JSON.stringify(newState));
+      return newState;
+    });
   };
 
   const clearCache = () => {
@@ -31,14 +50,28 @@ export default function LeftNavbar({ onMenuClick }) {
       </div>
       <div className={`h-full w-64 fixed top-0 left-0 bg-gray-800 text-white flex flex-col p-4 space-y-6 transition-transform transform lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         {menuItems.map((name) => (
-          <div key={name} className="w-full">
-            <button
-              onClick={() => onMenuClick(name)}
-              className="w-full flex justify-between items-center py-3 px-4 hover:bg-gray-700 rounded border border-gray-600 text-lg"
-            >
-              <span>{name}</span>
-              <FaPlus className="h-6 w-6" />
-            </button>
+          <div key={name} className="w-full flex justify-between items-center py-2">
+            <span>{name}</span>
+            {editDeleteVisible[name] ? (
+              <>
+                <button onClick={() => onEdit(name)} className="text-blue-500 hover:text-blue-700">
+                  <FaEdit />
+                </button>
+                <button onClick={() => {
+                  onDelete(name);
+                  toggleEditDelete(name);
+                }} className="text-red-500 hover:text-red-700 ml-1">
+                  <FaTrash />
+                </button>
+              </>
+            ) : (
+              <button onClick={() => {
+                onMenuClick(name);
+                toggleEditDelete(name);
+              }} className="text-green-500 hover:text-green-700 ml-2">
+                <FaPlus />
+              </button>
+            )}
           </div>
         ))}
         <div className="mt-auto space-y-4">
