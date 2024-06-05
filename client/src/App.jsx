@@ -71,13 +71,14 @@ export default function App() {
     const newSelectedComponents = selectedComponents.filter(comp => comp !== componentName);
     setSelectedComponents(newSelectedComponents);
     localStorage.setItem('selectedComponents', JSON.stringify(newSelectedComponents));
-
+    localStorage.removeItem(componentName);
     setEditDeleteVisible(prevState => {
       const newState = {
         ...prevState,
         [componentName]: false
       };
       localStorage.setItem('editDeleteVisible', JSON.stringify(newState));
+      window.location.reload();
       return newState;
     });
   };
