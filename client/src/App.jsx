@@ -22,7 +22,7 @@ const DraggableComponent = ({ componentName, Component, onAdd, onEdit, onDelete 
   return (
     <Reorder.Item
       value={componentName}
-      className="p-4 rounded-lg mb-4 border border-gray-300"
+      className="p-4 rounded-lg mb-4"
     >
       <Component onAdd={() => onAdd(componentName)} onEdit={() => onEdit(componentName)} onDelete={() => onDelete(componentName)} />
     </Reorder.Item>
@@ -86,30 +86,34 @@ export default function App() {
   };
 
   return (
-    <div className="flex">
-      <LeftNavbar onMenuClick={handleMenuClick} onEdit={handleEdit} onDelete={handleDelete} />
-      <RightResume>
-        <Reorder.Group
-          axis="y"
-          values={selectedComponents}
-          onReorder={handleReorder}
-          className="space-y-4 rounded-lg"
-        >
-          {selectedComponents.map((componentName, index) => {
-            const Component = componentMap[componentName];
-            return (
-              <DraggableComponent
-                key={componentName}
-                componentName={componentName}
-                Component={Component}
-                onAdd={handleMenuClick}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-            );
-          })}
-        </Reorder.Group>
-      </RightResume>
+    <div className="flex h-screen">
+      <div className="w-1/8">
+        <LeftNavbar onMenuClick={handleMenuClick} onEdit={handleEdit} onDelete={handleDelete} />
+      </div>
+      <div className="w-7/8">
+        <RightResume>
+          <Reorder.Group
+            axis="y"
+            values={selectedComponents}
+            onReorder={handleReorder}
+            className="space-y-4 rounded-lg w-full"
+          >
+            {selectedComponents.map((componentName, index) => {
+              const Component = componentMap[componentName];
+              return (
+                <DraggableComponent
+                  key={componentName}
+                  componentName={componentName}
+                  Component={Component}
+                  onAdd={handleMenuClick}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              );
+            })}
+          </Reorder.Group>
+        </RightResume>
+      </div>
     </div>
   );
 }

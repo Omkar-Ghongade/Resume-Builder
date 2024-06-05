@@ -1,8 +1,6 @@
-import React from 'react';
-
 export default function RightResume({ children }) {
   return (
-    <div id="right-content" className="p-4 lg:ml-64">
+    <div id="right-content" className="items-center justify-center">
       {children}
     </div>
   );

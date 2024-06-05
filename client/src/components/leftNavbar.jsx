@@ -48,7 +48,7 @@ export default function LeftNavbar({ onMenuClick, onEdit, onDelete }) {
           <FaBars className="h-6 w-6" />
         </button>
       </div>
-      <div className={`h-full w-64 fixed top-0 left-0 bg-gray-800 text-white flex flex-col p-4 space-y-6 transition-transform transform lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+      <div className={`h-full fixed top-0 left-0 bg-gray-800 text-white flex flex-col p-4 space-y-6 transition-transform transform lg:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
         {menuItems.map((name) => (
           <div key={name} className="w-full flex justify-between items-center py-2">
             <span>{name}</span>

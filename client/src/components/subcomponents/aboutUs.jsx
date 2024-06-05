@@ -3,7 +3,7 @@ import { FaEdit, FaTrash, FaPlus } from 'react-icons/fa';
 
 export default function AboutUs({ onEdit, onDelete, onAdd }) {
   return (
-    <div className="flex flex-col items-center p-4 mb-4 border border-gray-300 rounded-lg">
+    <div className="flex flex-col items-center">
       <h1 className="text-3xl font-bold">Omkar Ghongade</h1>
       <div className="mt-2 flex space-x-4 text-lg">
         <span>+91 9172716327</span>
