@@ -62,6 +62,8 @@ export default function App() {
 
   const handleEdit = (componentName) => {
     console.log(`Editing ${componentName}`);
+    localStorage.setItem('edit', componentName);
+    window.location.reload();
     // Add your edit logic here
   };
 
