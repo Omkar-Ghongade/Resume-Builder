@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useCache } from '../../cache/useCache';
 
 export default function AboutUs({ edit }) {
   const [formVisible, setFormVisible] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useCache('aboutData', {
     name: 'John Doe',
     mobile: '+91 XXXXX XXXXX',
     email: 'johndoe@gmail.com',
